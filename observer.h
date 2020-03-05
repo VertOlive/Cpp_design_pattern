@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <algorithm>
 
 template <typename T, typename U> class observer;
 
