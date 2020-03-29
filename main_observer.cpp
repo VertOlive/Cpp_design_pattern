@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "acts_and_brain.h"
+#include "example_observer.h"
 
 int main(int argc, char* argv[]) {
 	Actionner act(0);

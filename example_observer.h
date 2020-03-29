@@ -3,7 +3,9 @@
 
 #include "observer.h"
 
-class Brain : public observer<Brain, int> {
+class Actionner;
+
+class Brain : public observer<Brain, Actionner, int> {
 	private:
 		int m_value = 0;
 	public:
@@ -16,7 +18,7 @@ class Brain : public observer<Brain, int> {
 
 };
 
-class Actionner : public observable<Brain, int> {
+class Actionner : public observable<Brain, Actionner, int> {
 	private:
 		int m_x;
 
