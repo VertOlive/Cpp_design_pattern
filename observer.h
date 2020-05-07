@@ -10,11 +10,12 @@ template <typename T, typename U, typename V> class observer;
 template <typename T, typename U, typename V>
 class observable {
 	private:
-	std::vector<observer<T, U, V>*> m_list_of_observer;
+	// a vector of reference_warpper is better than a vector pointers.
+	std::vector<std::reference_wrapper<observer<T, U, V> > > m_list_of_observer;
 	
 	public:
-	void add_observer(observer<T, U, V>* obs);
-	void delete_observer(observer<T, U, V>* obs);
+	void add_observer(observer<T, U, V>& obs);
+	void delete_observer(observer<T, U, V>& obs);
 	void notify(V value);
 
 };
@@ -22,17 +23,19 @@ class observable {
 template <typename T, typename U, typename V>
 class observer {
 	public:
-	virtual void update(V value) {};
+	// Let to user definition his .h file.
+	virtual void update(V value) = 0;
 };
 
 template <typename T, typename U, typename V>
-void observable<T, U, V>::add_observer(observer<T, U, V>* obs) {
+void observable<T, U, V>::add_observer(observer<T, U, V>& obs) {
 	m_list_of_observer.push_back(obs);
 }
 
 template <typename T, typename U, typename V>
-void observable<T, U, V>::delete_observer(observer<T, U, V>* observer) {
+void observable<T, U, V>::delete_observer(observer<T, U, V>& observer) {
 	for(int i = 0; i < m_list_of_observer.size(); i++) {
+		// reference compared, work.
 		if( m_list_of_observer[i] == observer) {
 			m_list_of_observer.erase(
 				m_list_of_observer.begin() + i);
@@ -42,8 +45,9 @@ void observable<T, U, V>::delete_observer(observer<T, U, V>* observer) {
 
 template <typename T, typename U, typename V>
 void observable<T, U, V>::notify(V value) {
-	for(auto &observer: m_list_of_observer) {
-		observer->update(value);
+	for(const auto observer: m_list_of_observer) {
+		// get() is because of reference_warpper.
+		observer.get().update(value);
 	}
 }
 
