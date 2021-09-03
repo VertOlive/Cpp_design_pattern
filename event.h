@@ -29,7 +29,14 @@ public:
       std::cout << "End of event chain or no reference to next event." << std::endl;
     }
   }
+
+  void add_event(Event<T>&& event) {
+    const std::lock_guard<std::mutex> lock(mutex);
+    to_next.insert(event);
+  }
+
 protected:
+  std::mutex mutex;
   std::map<Event<T> > to_next;
 private:
   std::string id;
