@@ -30,12 +30,12 @@ global_catesian_var var;
 
 
 /* make a modular railroad for conditionnal, don't forget to suppress */
-class Conc_logic_convert : public Logic<cartesian_data, bool> {
+class Conc_logic_convert : public Logic<cartesian_data> {
 protected:
   /* TODO */
   std::tuple<std::string, cartesian_data, std::function<void(T)> > railroad();
 public:
-  bool operator()(cartesian_data args) override {
+  auto operator()(cartesian_data args) override {
     std::cout << "In event convert." << std::endl;
 
     polar_data = polar;
